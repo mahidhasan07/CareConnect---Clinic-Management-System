@@ -24,6 +24,7 @@ if (!isset($_SESSION['is_logged_in']) || $_SESSION['role'] !== 'admin') {
             <li onclick="showSection('appointments')">4. Appointments</li>
             <li onclick="showSection('medicines')">6. Medicine List</li>
             <li onclick="showSection('backups')">7. Backups</li>
+            <li>Project</li>
             <li onclick="logout()" class="logout-btn">Log Out</li>
         </ul>
     </div>
