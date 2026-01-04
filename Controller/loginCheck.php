@@ -12,8 +12,11 @@ if (isset($_POST['submit'])) {
         $_SESSION['is_logged_in'] = true;
         $_SESSION['role'] = $user['role'];
         $_SESSION['name'] = $user['name'];
-
-        // Redirect based on Role
+        
+        
+        $_SESSION['user_id'] = $user['id']; 
+        $_SESSION['email'] = $user['email'];
+        
         if ($user['role'] === 'admin') {
             header("Location: ../View/admin_dashboard.php");
         } elseif ($user['role'] === 'doctor') {
