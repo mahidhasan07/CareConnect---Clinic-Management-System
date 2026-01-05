@@ -1,12 +1,9 @@
 <?php
-session_start();
+require_once '../Controller/session_auth.php'; // Handles Session Start & Timeout
 require_once '../Model/DoctorModel.php';
 
-// Security Check
-if (!isset($_SESSION['is_logged_in']) || $_SESSION['role'] !== 'doctor') {
-    header("Location: login.php");
-    exit();
-}
+// Role Security Check
+if ($_SESSION['role'] !== 'doctor') { header("Location: login.php"); exit(); }
 
 $docID = $_SESSION['user_id'];
 $profile = getDoctorProfile($docID);

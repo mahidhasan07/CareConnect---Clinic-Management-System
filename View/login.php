@@ -20,5 +20,16 @@
         <br>
         <p>New user? <a href="register.php" style="color:#007bff; margin:0;">Register Here</a></p>
     </div>
+    
+    <script>
+        // Check URL for "msg=timeout"
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('msg') === 'timeout') {
+            alert("Session Expired! You were inactive for 45 seconds. Please login again.");
+            // Clean the URL
+            window.history.replaceState(null, null, window.location.pathname);
+        }
+    </script>
+    
 </body>
 </html>

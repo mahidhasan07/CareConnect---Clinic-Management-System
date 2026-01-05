@@ -1,7 +1,9 @@
 <?php
-session_start();
+require_once '../Controller/session_auth.php'; // Handles Session Start & Timeout
 require_once '../Model/AdminModel.php';
-if (!isset($_SESSION['is_logged_in']) || $_SESSION['role'] !== 'admin') { header("Location: login.php"); exit(); }
+
+// Role Security Check
+if ($_SESSION['role'] !== 'admin') { header("Location: login.php"); exit(); }
 
 $doctors = getAllDoctors();
 $patients = getAllPatients();
