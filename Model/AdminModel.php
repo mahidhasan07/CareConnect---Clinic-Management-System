@@ -104,4 +104,22 @@ function updateAdminProfile($id, $name, $email) {
     
     return $stmt->execute();
 }
+
+// ... (keep existing code) ...
+
+// --- UPDATE FUNCTIONS ---
+
+function updateDoctor($id, $name, $spec, $phone, $fee) {
+    global $conn;
+    $stmt = $conn->prepare("UPDATE Doctor SET FullName=?, Specialization=?, PhoneNumber=?, VisitFee=? WHERE DoctorID=?");
+    $stmt->bind_param("sssdi", $name, $spec, $phone, $fee, $id);
+    return $stmt->execute();
+}
+
+function updateMedicine($id, $name, $type, $strength, $maker) {
+    global $conn;
+    $stmt = $conn->prepare("UPDATE Medicine SET Name=?, Type=?, Strength=?, ManufacturerName=? WHERE MedicineID=?");
+    $stmt->bind_param("ssssi", $name, $type, $strength, $maker, $id);
+    return $stmt->execute();
+}
 ?>

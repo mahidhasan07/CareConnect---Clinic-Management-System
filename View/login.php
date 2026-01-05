@@ -14,8 +14,8 @@
         <h2>Login</h2>
         <form action="../Controller/loginCheck.php" method="POST">
             <label>Email</label>
-            <input type="email" name="email" value="admin@test.com" required> <label>Password</label>
-            <input type="password" name="password" value="123" required> <input type="submit" name="submit" value="Login" class="btn">
+            <input type="email" name="email" value="" required> <label>Password</label>
+            <input type="password" name="password" value="" required> <input type="submit" name="submit" value="Login" class="btn">
         </form>
         <br>
         <p>New user? <a href="register.php" style="color:#007bff; margin:0;">Register Here</a></p>

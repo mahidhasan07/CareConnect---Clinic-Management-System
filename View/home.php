@@ -1,70 +1,73 @@
-<?php
-session_start();
-if (!isset($_SESSION['is_logged_in'])) {
-    header("Location: login.php");
-    exit();
-}
-$role = $_SESSION['role'];
-$name = $_SESSION['name'];
-?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dashboard - <?php echo ucfirst($role); ?></title>
-    <link rel="stylesheet" href="../Asset/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARECONNECT : CLINIC MANAGEMENT SYSTEM</title>
+    
+    <link rel="stylesheet" href="/ClinicMS/Asset/style.css"> 
+    
 </head>
-<body>
-    <header>
-        <div class="container">
-            <h1>CMS | <?php echo ucfirst($role); ?> Panel</h1>
-            <ul>
-                <li>Hello, <?php echo $name; ?></li>
-                <li><a href="../Controller/logoutCheck.php">Logout</a></li>
+<body class="landing-body">
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">CARECONNECT</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="login.php" class="nav-btn">Login</a></li>
             </ul>
         </div>
-    </header>
+    </nav>
 
-    <div class="container">
-        <?php if ($role == 'admin') { ?>
-            <div class="dashboard-card">
-                <h3>Admin Dashboard</h3>
-                <p>Welcome Admin. You have full control.</p>
-                <ul>
-                    [cite_start]<li>Manage Doctor Records [cite: 15]</li>
-                    [cite_start]<li>View All Appointments [cite: 15]</li>
-                    [cite_start]<li>Manage Medicine List [cite: 15]</li>
-                    [cite_start]<li>System Backup [cite: 15]</li>
-                </ul>
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>CARECONNECT</h1>
+            <h2>CLINIC MANAGEMENT SYSTEM</h2>
+            <p>Streamlining healthcare management for Doctors and Patients.</p>
+            
+            <div class="hero-buttons">
+                <a href="login.php" class="btn-hero login">Login</a>
+                <a href="register.php" class="btn-hero register">Register</a>
             </div>
-        <?php } ?>
-
-        <?php if ($role == 'doctor') { ?>
-            <div class="dashboard-card">
-                <h3>Doctor Dashboard</h3>
-                <p>Welcome Doctor.</p>
-                <ul>
-                    [cite_start]<li>Manage Availability [cite: 15]</li>
-                    [cite_start]<li>Approve/Reject Appointments [cite: 16]</li>
-                    [cite_start]<li>View Patient History [cite: 16]</li>
-                    [cite_start]<li>Issue Prescriptions [cite: 16]</li>
-                </ul>
-            </div>
-        <?php } ?>
-
-        <?php if ($role == 'patient') { ?>
-            <div class="dashboard-card">
-                <h3>Patient Dashboard</h3>
-                <p>Welcome Patient.</p>
-                <ul>
-                    [cite_start]<li>Search Doctor by Specialization [cite: 16]</li>
-                    [cite_start]<li>Book/Cancel Appointment [cite: 16]</li>
-                    [cite_start]<li>View Prescriptions [cite: 16]</li>
-                    [cite_start]<li>Update Medical History [cite: 16]</li>
-                </ul>
-            </div>
-        <?php } ?>
-
+        </div>
     </div>
+
+    <section id="about" class="info-section">
+        <div class="container">
+            <h2>About Us</h2>
+            <p>
+                Welcome to <strong>CareConnect</strong>, your comprehensive solution for modern clinic management. 
+                We are dedicated to bridging the gap between patients and healthcare providers. 
+                Our platform simplifies appointment booking, prescription management, and doctor-patient communication, 
+                ensuring a seamless healthcare experience for everyone. Whether you are a patient looking for 
+                specialized care or a doctor managing your schedule, CareConnect is here to help.
+            </p>
+        </div>
+    </section>
+
+    <section id="contact" class="info-section contact-bg">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>Have questions or need support? Reach out to us anytime.</p>
+            
+            <div class="contact-details">
+                <div class="contact-item">
+                    <strong>Email:</strong> 
+                    <a href="mailto:hamimrahmanaiub@gmail.com">hamimrahmanaiub@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <strong>Phone:</strong> 
+                    <a href="tel:+8801739613131">01739613131</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 CareConnect. All rights reserved.</p>
+    </footer>
+
 </body>
 </html>
