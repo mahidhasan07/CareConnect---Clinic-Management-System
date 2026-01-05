@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-// 1. Check if user is logged in
+// 1. Check if the user is already logged in
 if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
     
-    // Redirect to Dashboard based on Role
+    // If logged in, send them to their specific Dashboard
     if ($_SESSION['role'] === 'admin') {
         header("Location: View/admin_dashboard.php");
     } elseif ($_SESSION['role'] === 'doctor') {
@@ -12,12 +12,14 @@ if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true) {
     } elseif ($_SESSION['role'] === 'patient') {
         header("Location: View/patient_dashboard.php");
     } else {
+        // Fallback if role is missing
         header("Location: View/login.php");
     }
 
 } else {
-    // 2. If NOT logged in, go to the Home Page (Landing Page)
-    header("Location: View/home.php");
+    // 2. If NOT logged in, send them to the Landing Page (Home)
+    // OLD CODE WAS: header("Location: View/login.php");
+    header("Location: View/home.php"); 
 }
 
 exit();
