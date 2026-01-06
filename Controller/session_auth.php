@@ -7,9 +7,8 @@ if (!isset($_SESSION['is_logged_in'])) {
     exit();
 }
 
-// 2. Define Timeout Duration (in seconds)
-// 45 seconds for testing. Change to 1800 (30 mins) for real use.
-$timeout_duration = 45;
+// 5 min for testing. 
+$timeout_duration = 300;
 
 // 3. Check if the session has expired
 if (isset($_SESSION['last_time'])) {
