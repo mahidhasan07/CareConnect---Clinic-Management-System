@@ -2,24 +2,29 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f6f9; /* Nice Light Blue-Grey Background */
+    background-color: #f4f6f9;
     display: flex;
     height: 100vh;
 }
 
-/* --- 2. SIDEBAR (Left Side) --- */
+/* --- 2. SIDEBAR (Fixed Left Side) --- */
 .sidebar {
     width: 250px;
-    background-color: #2c3e50; /* Dark Blue */
+    background-color: #2c3e50;
     color: white;
     padding-top: 20px;
     display: flex;
     flex-direction: column;
+    position: fixed; /* Keeps sidebar fixed while main content scrolls */
+    height: 100vh;
+    z-index: 100;
 }
 
 .sidebar h2 {
     text-align: center;
     margin-bottom: 20px;
+    border-bottom: 1px solid #34495e;
+    padding-bottom: 15px;
 }
 
 .sidebar ul {
@@ -31,34 +36,38 @@ body {
 
 .sidebar li {
     padding: 15px 20px;
-    border-bottom: 1px solid #34495e; /* Slightly lighter blue line */
+    border-bottom: 1px solid #34495e;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .sidebar li:hover {
-    background-color: #3498db; /* Bright Blue on Hover */
+    background-color: #3498db;
 }
 
 /* Logout Button (Red) */
 .logout-btn {
-    background-color: #c0392b; /* Dark Red */
+    background-color: #c0392b;
     text-align: center;
     font-weight: bold;
-    margin-top: auto;
+    padding: 15px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .logout-btn:hover {
-    background-color: #e74c3c; /* Lighter Red */
+    background-color: #e74c3c;
 }
 
 /* --- 3. MAIN CONTENT (Right Side) --- */
 .main-content {
     flex: 1;
+    margin-left: 250px; /* Offset for the fixed sidebar */
     padding: 30px;
     overflow-y: auto;
 }
 
-/* Sections */
+/* Section visibility */
 .section {
     display: none;
 }
@@ -74,10 +83,11 @@ body {
     margin-bottom: 20px;
     border-bottom: 2px solid #ddd;
     padding-bottom: 10px;
+    gap: 15px;
 }
 
 .header-row h1 {
-    color: #2c3e50; /* Dark Blue Text */
+    color: #2c3e50;
     margin: 0;
 }
 
@@ -85,132 +95,151 @@ body {
 .cards-container {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .card {
     background: white;
-    padding: 20px;
-    width: 200px;
+    padding: 25px;
+    min-width: 180px;
     text-align: center;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Soft shadow */
-    border-top: 4px solid #3498db; /* Blue Top Border */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-top: 4px solid #3498db;
 }
 
 .card h3 {
     margin: 0;
     font-size: 16px;
-    color: #7f8c8d; /* Grey Text */
+    color: #7f8c8d;
 }
 
 .card p {
-    font-size: 30px;
+    font-size: 32px;
     font-weight: bold;
     margin: 10px 0 0;
-    color: #2c3e50; /* Dark Blue Numbers */
+    color: #2c3e50;
 }
 
-/* --- 5. TABLES --- */
+/* --- 5. SEARCH BAR --- */
+.search-input {
+    padding: 10px 15px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 20px; /* Rounded modern look */
+    outline: none;
+    transition: 0.3s;
+}
+
+.search-input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+/* --- 6. TABLES --- */
 .styled-table {
     width: 100%;
     border-collapse: collapse;
     background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .styled-table th, 
 .styled-table td {
-    padding: 12px 15px;
+    padding: 14px 15px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #eee;
 }
 
 .styled-table th {
-    background-color: #2c3e50; /* Dark Blue Header */
+    background-color: #2c3e50;
     color: white;
+    font-weight: 600;
 }
 
-/* --- 6. BUTTONS & INPUTS --- */
+.styled-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* --- 7. BUTTONS --- */
 button {
-    padding: 8px 15px;
+    padding: 10px 18px;
     border: none;
     cursor: pointer;
     color: white;
-    border-radius: 4px;
+    border-radius: 5px;
     font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s;
 }
 
-.btn-add {
-    background-color: #27ae60; /* Green */
-}
+.btn-add { background-color: #27ae60; }
+.btn-add:hover { background-color: #219150; }
 
-.btn-save {
-    background-color: #2980b9; /* Blue */
-}
+.btn-save { background-color: #2980b9; }
+.btn-save:hover { background-color: #21618c; }
 
-.btn-cancel {
-    background-color: #c0392b; /* Red */
+.btn-cancel { 
+    background-color: #c0392b; 
+    text-decoration: none;
+    display: inline-block;
+    color: white !important;
 }
+.btn-cancel:hover { background-color: #a93226; }
 
-input {
+/* --- 8. FORMS & INPUTS --- */
+input[type="text"], 
+input[type="email"], 
+input[type="number"], 
+input[type="password"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 5px;
     box-sizing: border-box;
 }
 
-/* Simple Form Container */
 .simple-form-box {
     background: white;
-    padding: 25px;
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-width: 450px;
 }
 
-/* --- 7. POP-UP MODAL --- */
+/* --- 9. MODALS --- */
 .modal {
     display: none;
     position: fixed;
-    top: 0; 
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 1000;
 }
 
 .modal-content {
     background-color: white;
-    width: 400px;
-    margin: 100px auto;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 450px;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 .modal-content h3 {
     margin-top: 0;
     color: #2c3e50;
-    border-bottom: 1px solid #eee;
+    border-bottom: 2px solid #f4f6f9;
     padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .form-buttons {
-    text-align: right;
-    margin-top: 15px;
-}
-
-/* Fix for "Remove" buttons that are actually links */
-a.btn-cancel {
-    color: white !important;       /* Changes text from Blue to White */
-    text-decoration: none;         /* Removes the underline */
-    display: inline-block;         /* Makes it behave like a button box */
-}
-
-/* Optional: Darker red when hovering */
-a.btn-cancel:hover {
-    color: white !important;       /* Keeps text white on hover */
-    opacity: 0.8;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
 }

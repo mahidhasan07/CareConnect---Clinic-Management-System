@@ -1,7 +1,20 @@
 <?php
-require_once 'db.php';
+require_once 'db.php'; // Ensure this matches your database connection filename
 
-// --- FETCH FUNCTIONS (For Dashboard) ---
+// --- 1. FETCH FUNCTIONS (For Displaying Data) ---
+
+/**
+ * Gets total counts for the Dashboard cards
+ */
+function getDashboardCounts() {
+    global $conn;
+    $counts = [];
+    $counts['doctors'] = $conn->query("SELECT COUNT(*) as total FROM Doctor")->fetch_assoc()['total'] ?? 0;
+    $counts['patients'] = $conn->query("SELECT COUNT(*) as total FROM Patient")->fetch_assoc()['total'] ?? 0;
+    $counts['medicines'] = $conn->query("SELECT COUNT(*) as total FROM Medicine")->fetch_assoc()['total'] ?? 0;
+    $counts['appointments'] = $conn->query("SELECT COUNT(*) as total FROM Appointment")->fetch_assoc()['total'] ?? 0;
+    return $counts;
+}
 
 function getAllDoctors() {
     global $conn;
@@ -23,7 +36,7 @@ function getAllMedicines() {
 
 function getAllAppointments() {
     global $conn;
-    // Joins to get names instead of IDs
+    // Joins to get names instead of raw IDs for the table view
     $sql = "SELECT A.AppointmentID, A.Date, A.Time, A.Status, 
                    P.FullName AS PatientName, 
                    D.FullName AS DoctorName 
@@ -33,30 +46,22 @@ function getAllAppointments() {
     return $conn->query($sql);
 }
 
-function getDashboardCounts() {
-    global $conn;
-    $counts = [];
-    $counts['doctors'] = $conn->query("SELECT COUNT(*) as total FROM Doctor")->fetch_assoc()['total'];
-    $counts['patients'] = $conn->query("SELECT COUNT(*) as total FROM Patient")->fetch_assoc()['total'];
-    $counts['medicines'] = $conn->query("SELECT COUNT(*) as total FROM Medicine")->fetch_assoc()['total'];
-    $counts['appointments'] = $conn->query("SELECT COUNT(*) as total FROM Appointment")->fetch_assoc()['total'];
-    return $counts;
-}
+// --- 2. ACTION FUNCTIONS (For Adding/Deleting) ---
 
-// --- ACTION FUNCTIONS (For Controllers) ---
-
+/**
+ * Adds a doctor and creates their login credentials in a single transaction
+ */
 function addDoctor($name, $spec, $phone, $fee, $email, $password) {
     global $conn;
-    // Transaction to add to both Doctor table and Login table
     $conn->begin_transaction();
     try {
-        // 1. Add to Doctor Table
+        // 1. Insert into Doctor Table
         $stmt = $conn->prepare("INSERT INTO Doctor (FullName, Specialization, PhoneNumber, VisitFee) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("sssd", $name, $spec, $phone, $fee);
         $stmt->execute();
         $docID = $conn->insert_id;
 
-        // 2. Add to Login Table
+        // 2. Insert into Login Table
         $hashed = password_hash($password, PASSWORD_DEFAULT);
         $stmt2 = $conn->prepare("INSERT INTO Login (Email, Password, Role, DoctorID) VALUES (?, ?, 'doctor', ?)");
         $stmt2->bind_param("ssi", $email, $hashed, $docID);
@@ -72,8 +77,8 @@ function addDoctor($name, $spec, $phone, $fee, $email, $password) {
 
 function deleteDoctor($id) {
     global $conn;
-    // Cascade delete in SQL usually handles Login/Appointments, 
-    // but good practice to delete directly
+    // SQL Foreign Key constraints (ON DELETE CASCADE) should handle Login table,
+    // but if not, delete the doctor here:
     $stmt = $conn->prepare("DELETE FROM Doctor WHERE DoctorID = ?");
     $stmt->bind_param("i", $id);
     return $stmt->execute();
@@ -93,21 +98,14 @@ function deleteMedicine($id) {
     return $stmt->execute();
 }
 
-function updateAdminProfile($id, $name, $email) {
+// --- 3. UPDATE FUNCTIONS (For Edit Forms) ---
+
+function updateAdminProfile($id, $name) {
     global $conn;
-    // Update Admin Table (Name)
     $stmt = $conn->prepare("UPDATE Admin SET FullName = ? WHERE AdminID = ?");
     $stmt->bind_param("si", $name, $id);
-    
-    // Note: Updating Email is complex because it's in both Admin and Login tables.
-    // For now, we will just update the Name to keep it simple and safe.
-    
     return $stmt->execute();
 }
-
-// ... (keep existing code) ...
-
-// --- UPDATE FUNCTIONS ---
 
 function updateDoctor($id, $name, $spec, $phone, $fee) {
     global $conn;

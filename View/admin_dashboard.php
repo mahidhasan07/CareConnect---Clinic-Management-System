@@ -25,16 +25,18 @@ $counts = getDashboardCounts();
             <li onclick="showSection('dashboard')">1. Dashboard</li>
             <li onclick="showSection('profile')">2. My Profile</li>
             <li onclick="showSection('doctors')">3. Manage Doctors</li>
-            <li onclick="showSection('patients')">5. Manage Patients</li>
-            <li onclick="showSection('appointments')">4. Appointments</li>
+            <li onclick="showSection('patients')">4. Manage Patients</li>
+            <li onclick="showSection('appointments')">5. Appointments</li>
             <li onclick="showSection('medicines')">6. Medicine List</li>
         </ul>
         
         <div class="logout-container">
-            <li onclick="logout()" class="logout-btn">Log Out</li>
+            <div onclick="logout()" class="logout-btn">Log Out</div>
         </div>
     </div>
+
     <div class="main-content">
+        
         <div id="dashboard" class="section active">
             <h1>Dashboard Overview</h1>
             <div class="cards-container">
@@ -44,19 +46,27 @@ $counts = getDashboardCounts();
                 <div class="card"><h3>Appointments</h3><p><?php echo $counts['appointments']; ?></p></div>
             </div>
         </div>
+
         <div id="profile" class="section">
             <h1>My Profile</h1>
             <div class="simple-form-box">
                 <form action="../Controller/updateProfile.php" method="POST">
-                    <label>Full Name:</label><input type="text" name="name" value="<?php echo $_SESSION['name']; ?>" required>
-                    <label>Email (Read Only):</label><input type="email" name="email" value="<?php echo $_SESSION['email']; ?>" readonly>
+                    <label>Full Name:</label>
+                    <input type="text" name="name" value="<?php echo $_SESSION['name']; ?>" required>
+                    <label>Email (Read Only):</label>
+                    <input type="email" name="email" value="<?php echo $_SESSION['email']; ?>" readonly>
                     <button type="submit" class="btn-save">Update Profile</button>
                 </form>
             </div>
         </div>
+
         <div id="doctors" class="section">
-            <div class="header-row"><h1>Manage Doctors</h1><button class="btn-add" onclick="openModal('doctor-modal')">+ Add Doctor</button></div>
-            <table class="styled-table">
+            <div class="header-row">
+                <h1>Manage Doctors</h1>
+                <input type="text" id="docSearch" onkeyup="filterTable('docSearch', 'docTable')" placeholder="Search doctors..." class="search-input">
+                <button class="btn-add" onclick="openModal('doctor-modal')">+ Add Doctor</button>
+            </div>
+            <table class="styled-table" id="docTable">
                 <thead><tr><th>Name</th><th>Spec</th><th>Phone</th><th>Fee</th><th>Action</th></tr></thead>
                 <tbody>
                     <?php while($row = $doctors->fetch_assoc()) { ?>
@@ -67,30 +77,61 @@ $counts = getDashboardCounts();
                         <td><?php echo $row['VisitFee']; ?></td>
                         <td>
                             <button class="btn-save" onclick="openEditDoctorModal('<?php echo $row['DoctorID']; ?>', '<?php echo $row['FullName']; ?>', '<?php echo $row['Specialization']; ?>', '<?php echo $row['PhoneNumber']; ?>', '<?php echo $row['VisitFee']; ?>')">Edit</button>
-                            <a href="../Controller/deleteDoctor.php?id=<?php echo $row['DoctorID']; ?>" class="btn-cancel" onclick="return confirm('Delete?');">Remove</a>
+                            <a href="../Controller/deleteDoctor.php?id=<?php echo $row['DoctorID']; ?>" class="btn-cancel" onclick="return confirm('Delete this doctor?');">Remove</a>
                         </td>
                     </tr>
                     <?php } ?>
                 </tbody>
             </table>
         </div>
+
         <div id="patients" class="section">
-            <h1>Manage Patients</h1>
-            <table class="styled-table">
+            <div class="header-row">
+                <h1>Manage Patients</h1>
+                <input type="text" id="patSearch" onkeyup="filterTable('patSearch', 'patTable')" placeholder="Search patients..." class="search-input">
+            </div>
+            <table class="styled-table" id="patTable">
                 <thead><tr><th>Name</th><th>Age</th><th>Gender</th><th>Phone</th></tr></thead>
-                <tbody><?php while($row = $patients->fetch_assoc()) { ?><tr><td><?php echo $row['FullName']; ?></td><td><?php echo $row['Age']; ?></td><td><?php echo $row['Gender']; ?></td><td><?php echo $row['PhoneNumber']; ?></td></tr><?php } ?></tbody>
+                <tbody>
+                    <?php while($row = $patients->fetch_assoc()) { ?>
+                    <tr>
+                        <td><?php echo $row['FullName']; ?></td>
+                        <td><?php echo $row['Age']; ?></td>
+                        <td><?php echo $row['Gender']; ?></td>
+                        <td><?php echo $row['PhoneNumber']; ?></td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
             </table>
         </div>
+
         <div id="appointments" class="section">
-            <h1>All Appointments</h1>
-            <table class="styled-table">
+            <div class="header-row">
+                <h1>All Appointments</h1>
+                <input type="text" id="appSearch" onkeyup="filterTable('appSearch', 'appTable')" placeholder="Search appointments..." class="search-input">
+            </div>
+            <table class="styled-table" id="appTable">
                 <thead><tr><th>Patient</th><th>Doctor</th><th>Date/Time</th><th>Status</th></tr></thead>
-                <tbody><?php while($row = $appointments->fetch_assoc()) { ?><tr><td><?php echo $row['PatientName']; ?></td><td><?php echo $row['DoctorName']; ?></td><td><?php echo $row['Date']." ".$row['Time']; ?></td><td><?php echo $row['Status']; ?></td></tr><?php } ?></tbody>
+                <tbody>
+                    <?php while($row = $appointments->fetch_assoc()) { ?>
+                    <tr>
+                        <td><?php echo $row['PatientName']; ?></td>
+                        <td><?php echo $row['DoctorName']; ?></td>
+                        <td><?php echo $row['Date']." ".$row['Time']; ?></td>
+                        <td><?php echo $row['Status']; ?></td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
             </table>
         </div>
+
         <div id="medicines" class="section">
-            <div class="header-row"><h1>Master Medicine List</h1><button class="btn-add" onclick="openModal('medicine-modal')">+ Add Medicine</button></div>
-            <table class="styled-table">
+            <div class="header-row">
+                <h1>Master Medicine List</h1>
+                <input type="text" id="medSearch" onkeyup="filterTable('medSearch', 'medTable')" placeholder="Search medicine..." class="search-input">
+                <button class="btn-add" onclick="openModal('medicine-modal')">+ Add Medicine</button>
+            </div>
+            <table class="styled-table" id="medTable">
                 <thead><tr><th>Name</th><th>Type</th><th>Strength</th><th>Manufacturer</th><th>Action</th></tr></thead>
                 <tbody>
                     <?php while($row = $medicines->fetch_assoc()) { ?>
@@ -101,7 +142,7 @@ $counts = getDashboardCounts();
                         <td><?php echo $row['ManufacturerName']; ?></td>
                         <td>
                             <button class="btn-save" onclick="openEditMedicineModal('<?php echo $row['MedicineID']; ?>', '<?php echo $row['Name']; ?>', '<?php echo $row['Type']; ?>', '<?php echo $row['Strength']; ?>', '<?php echo $row['ManufacturerName']; ?>')">Edit</button>
-                            <a href="../Controller/deleteMedicine.php?id=<?php echo $row['MedicineID']; ?>" class="btn-cancel" onclick="return confirm('Delete?');">Remove</a>
+                            <a href="../Controller/deleteMedicine.php?id=<?php echo $row['MedicineID']; ?>" class="btn-cancel" onclick="return confirm('Delete this medicine?');">Remove</a>
                         </td>
                     </tr>
                     <?php } ?>
@@ -120,7 +161,10 @@ $counts = getDashboardCounts();
                 <input type="text" name="phone" placeholder="Phone Number" required>
                 <input type="number" name="fee" placeholder="Visit Fee" required>
                 <input type="password" name="password" placeholder="Password" required>
-                <div class="form-buttons"><button type="submit" name="add_doctor" class="btn-save">Save</button><button type="button" class="btn-cancel" onclick="closeModal('doctor-modal')">Cancel</button></div>
+                <div class="form-buttons">
+                    <button type="submit" name="add_doctor" class="btn-save">Save</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('doctor-modal')">Cancel</button>
+                </div>
             </form>
         </div>
     </div>
@@ -133,7 +177,10 @@ $counts = getDashboardCounts();
                 <input type="text" name="type" placeholder="Type" required>
                 <input type="text" name="strength" placeholder="Strength" required>
                 <input type="text" name="maker" placeholder="Manufacturer" required>
-                <div class="form-buttons"><button type="submit" name="add_medicine" class="btn-save">Save</button><button type="button" class="btn-cancel" onclick="closeModal('medicine-modal')">Cancel</button></div>
+                <div class="form-buttons">
+                    <button type="submit" name="add_medicine" class="btn-save">Save</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal('medicine-modal')">Cancel</button>
+                </div>
             </form>
         </div>
     </div>
