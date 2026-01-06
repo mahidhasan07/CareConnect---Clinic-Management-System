@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CARECONNECT : CLINIC MANAGEMENT SYSTEM</title>
     
-    <link rel="stylesheet" href="/ClinicMS/Asset/style.css"> 
+    <link rel="stylesheet" href="/CareConnect---Clinic-Management-System/Asset/style.css"> 
     
 </head>
 <body class="landing-body">
