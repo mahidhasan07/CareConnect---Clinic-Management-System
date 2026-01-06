@@ -36,7 +36,7 @@ if ($slotsResult->num_rows > 0) {
     <nav class="sidebar-menu">
       <button onclick="showSection('dashboard')">1. Dashboard Overview</button>
       <button onclick="showSection('profile')">2. My Profile</button>
-      <button onclick="showSection('search')">3. Search Doctors</button>
+      <button onclick="showSection('search')">3. Book Appointment</button>
       <button onclick="showSection('appointments')">4. My Appointments</button>
       <button onclick="showSection('prescriptions')">5. View Prescriptions</button>
     </nav>
