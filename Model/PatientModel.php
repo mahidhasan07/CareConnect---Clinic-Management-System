@@ -66,4 +66,33 @@ function getAllDoctorSlots() {
     return $conn->query($sql);
 }
 
+function isTimeInSlot($docID, $dayName, $requestTime) {
+    global $conn;
+    // Check if there is a slot for this Doctor on this Day where Time is between Start and End
+    $sql = "SELECT * FROM AppointmentSlots WHERE DoctorID = ? AND Days = ? 
+            AND ? BETWEEN StartTime AND EndTime";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iss", $docID, $dayName, $requestTime);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    // If we find a row, it means the time is valid
+    return $result->num_rows > 0;
+}
+
+// CHECK 2: Is there already a booking at this exact time?
+function isSlotBooked($docID, $date, $time) {
+    global $conn;
+    // Check for any appointment at this specific Date & Time that is NOT Cancelled
+    $sql = "SELECT * FROM Appointment WHERE DoctorID = ? AND Date = ? AND Time = ? 
+            AND (Status = 'Booked' OR Status = 'Approved')";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iss", $docID, $date, $time);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    // If rows > 0, the slot is taken
+    return $result->num_rows > 0;
+}
+
 ?>
