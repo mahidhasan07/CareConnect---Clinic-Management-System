@@ -2,8 +2,11 @@
 require_once '../Controller/session_auth.php'; // Handles Session Start & Timeout
 require_once '../Model/PatientModel.php';
 
-// Role Security Check
-if ($_SESSION['role'] !== 'patient') { header("Location: login.php"); exit(); }
+// Security Check
+if ($_SESSION['role'] !== 'patient') {
+    header("Location: login.php");
+    exit();
+}
 
 $patID = $_SESSION['user_id'];
 $profile = getPatientProfile($patID);
@@ -40,7 +43,9 @@ if ($slotsResult->num_rows > 0) {
       <button onclick="showSection('appointments')">4. My Appointments</button>
       <button onclick="showSection('prescriptions')">5. View Prescriptions</button>
     </nav>
-    <button onclick="logout()" class="logout-btn">Log Out</button>
+    <div class="logout-container">
+        <button onclick="logout()" class="logout-btn">Log Out</button>
+    </div>
   </aside>
 
   <main class="main-content">
@@ -64,11 +69,22 @@ if ($slotsResult->num_rows > 0) {
       <div class="form-box">
         <form action="../Controller/patientActions.php" method="POST">
             <input type="hidden" name="action" value="update_profile">
-            <label>Full Name</label><input name="name" value="<?php echo $profile['FullName']; ?>" required />
-            <label>Email (Read Only)</label><input value="<?php echo $_SESSION['email']; ?>" readonly />
-            <label>Phone Number</label><input name="phone" value="<?php echo $profile['PhoneNumber']; ?>" required />
-            <label>Address</label><input name="address" value="<?php echo $profile['Address']; ?>" required />
-            <label>Medical History</label><textarea name="history" rows="3"><?php echo isset($profile['MedicalHistory']) ? $profile['MedicalHistory'] : ''; ?></textarea>
+            
+            <label>Full Name</label>
+            <input name="name" value="<?php echo $profile['FullName']; ?>" required />
+            
+            <label>Email (Read Only)</label>
+            <input value="<?php echo $_SESSION['email']; ?>" readonly />
+            
+            <label>Phone Number</label>
+            <input name="phone" value="<?php echo $profile['PhoneNumber']; ?>" required />
+
+            <label>Address</label>
+            <input name="address" value="<?php echo $profile['Address']; ?>" required />
+            
+            <label>Medical History</label>
+            <textarea name="history" rows="3"><?php echo isset($profile['MedicalHistory']) ? $profile['MedicalHistory'] : ''; ?></textarea>
+            
             <button type="submit" class="btn-primary">Update Profile</button>
         </form>
       </div>
@@ -76,11 +92,22 @@ if ($slotsResult->num_rows > 0) {
 
     <section id="search" class="section">
       <h1>Book Appointment</h1>
-      <div class="card-grid">
-        <?php while($doc = $doctors->fetch_assoc()) { 
-            $docID = $doc['DoctorID'];
+      
+      <div style="margin-bottom: 20px;">
+        <input type="text" id="docSearch" onkeyup="filterDoctorsInternal()" placeholder="Search by Doctor Name or Specialization..." 
+               style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;">
+      </div>
+
+      <div class="card-grid" id="doctor-list">
+        <?php 
+        if ($doctors->num_rows > 0) {
+            $doctors->data_seek(0); 
+            while($doc = $doctors->fetch_assoc()) { 
+                $docID = $doc['DoctorID'];
+                // Create a searchable text string (Name + Spec)
+                $searchText = strtolower($doc['FullName'] . " " . $doc['Specialization']);
         ?>
-            <div class="card">
+            <div class="card doctor-card" data-search="<?php echo $searchText; ?>">
                 <h3><?php echo $doc['FullName']; ?> <small style="font-size:14px; color:#777;">(<?php echo $doc['Specialization']; ?>)</small></h3>
                 <p><b>Visit Fee:</b> <?php echo $doc['VisitFee']; ?> BDT</p>
                 
@@ -100,24 +127,51 @@ if ($slotsResult->num_rows > 0) {
                 <form action="../Controller/patientActions.php" method="POST">
                     <input type="hidden" name="action" value="book_appt">
                     <input type="hidden" name="doc_id" value="<?php echo $docID; ?>">
-                    
                     <label style="font-size:14px;">Select Date:</label>
                     <input type="date" name="date" required min="<?php echo date('Y-m-d'); ?>">
-                    
                     <label style="font-size:14px;">Select Time:</label>
                     <input type="time" name="time" required>
-                    
                     <button type="submit" class="action-btn book-btn">Book Appointment</button>
                 </form>
             </div>
-        <?php } ?>
+        <?php 
+            } 
+        } else {
+            echo "<p>No doctors found.</p>";
+        }
+        ?>
       </div>
+      
+      <script>
+      function filterDoctorsInternal() {
+          // 1. Get input
+          var input = document.getElementById('docSearch');
+          var filter = input.value.toLowerCase();
+          
+          // 2. Get all cards
+          var cards = document.getElementsByClassName('doctor-card');
+          
+          // 3. Loop and Hide/Show
+          for (var i = 0; i < cards.length; i++) {
+              // We grab the hidden 'data-search' attribute we added in PHP
+              var searchData = cards[i].getAttribute('data-search');
+              
+              if (searchData.indexOf(filter) > -1) {
+                  cards[i].style.display = ""; // Show
+              } else {
+                  cards[i].style.display = "none"; // Hide
+              }
+          }
+      }
+      </script>
     </section>
-
+    
     <section id="appointments" class="section">
       <h1>My Appointments</h1>
       <div class="card-grid">
-        <?php $myAppts->data_seek(0); while($row = $myAppts->fetch_assoc()) { ?>
+        <?php 
+        $myAppts->data_seek(0); 
+        while($row = $myAppts->fetch_assoc()) { ?>
             <div class="card">
                 <h3><?php echo $row['DoctorName']; ?> (<?php echo $row['Specialization']; ?>)</h3>
                 <p><b>Date:</b> <?php echo $row['Date'] . " at " . $row['Time']; ?></p>
@@ -130,7 +184,9 @@ if ($slotsResult->num_rows > 0) {
     <section id="prescriptions" class="section">
       <h1>My Prescriptions</h1>
       <div class="card-grid">
-        <?php $myPrescs->data_seek(0); while($row = $myPrescs->fetch_assoc()) { ?>
+        <?php 
+        $myPrescs->data_seek(0); 
+        while($row = $myPrescs->fetch_assoc()) { ?>
             <div class="card" style="border-top-color: #27ae60;">
                 <h3>Dr. <?php echo $row['DoctorName']; ?></h3>
                 <p><b>Medicine:</b> <?php echo $row['MedicineName']; ?></p>
