@@ -127,7 +127,7 @@ $stats = getDoctorStats($docID); // Fetch stats for dashboard
         <?php if ($historyAppts->num_rows > 0) { 
             while($row = $historyAppts->fetch_assoc()) { ?>
             <div class="card" style="border-top-color: #27ae60;">
-                <h3><?php echo $row['FullName']; ?></h3>
+                <h3><?php echo $row['FullName']; ?> (ID: <?php echo $row['PatientID']; ?>)</h3>
                 <p><?php echo $row['Date'] . " - " . $row['Time']; ?></p>
                 <p style="color:#27ae60; font-weight:bold;">Confirmed</p>
             </div>
