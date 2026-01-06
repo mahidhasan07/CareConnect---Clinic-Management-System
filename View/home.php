@@ -49,17 +49,24 @@
 
     <section id="contact" class="info-section contact-bg">
         <div class="container">
-            <h2>Contact Us</h2>
+            <h2>CONTACT US</h2>
             <p>Have questions or need support? Reach out to us anytime.</p>
             
             <div class="contact-details">
                 <div class="contact-item">
                     <strong>Email:</strong> 
-                    <a href="mailto:hamimrahmanaiub@gmail.com">hamimrahmanaiub@gmail.com</a>
+                    <div style="margin-top: 10px;">
+                        <a href="mailto:hamimrahmanaiub@gmail.com">hamimrahmanaiub@gmail.com</a><br>
+                        <a href="mailto:mahidhasanremon@gmail.com">mahidhasanremon@gmail.com</a>
+                    </div>
                 </div>
+
                 <div class="contact-item">
                     <strong>Phone:</strong> 
-                    <a href="tel:+8801739613131">01739613131</a>
+                    <div style="margin-top: 10px;">
+                        <a href="tel:+8801739613131">01739613131</a><br>
+                        <a href="tel:+8801736939532">01736939532</a>
+                    </div>
                 </div>
             </div>
         </div>
