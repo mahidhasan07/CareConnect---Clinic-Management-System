@@ -69,5 +69,21 @@
         <p>&copy; 2025 CareConnect. All rights reserved.</p>
     </footer>
 
+    <script>
+    // Smooth scroll without changing the URL to #id
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

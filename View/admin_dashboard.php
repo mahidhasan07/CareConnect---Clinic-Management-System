@@ -28,8 +28,11 @@ $counts = getDashboardCounts();
             <li onclick="showSection('patients')">5. Manage Patients</li>
             <li onclick="showSection('appointments')">4. Appointments</li>
             <li onclick="showSection('medicines')">6. Medicine List</li>
-            <li onclick="logout()" class="logout-btn">Log Out</li>
         </ul>
+        
+        <div class="logout-container">
+            <li onclick="logout()" class="logout-btn">Log Out</li>
+        </div>
     </div>
     <div class="main-content">
         <div id="dashboard" class="section active">
