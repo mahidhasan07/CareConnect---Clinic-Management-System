@@ -94,10 +94,10 @@ body {
 }
 
 .section.active {
-    display: block; /* Visible when active */
+    display: block; 
 }
 
-/* Fade Animation */
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -116,7 +116,7 @@ h3 {
     color: #2c3e50;
 }
 
-/* --- CARDS (Matches Admin Dashboard Cards) --- */
+
 .card-grid {
     display: flex;
     flex-direction: column;
@@ -191,5 +191,4 @@ button:hover { opacity: 0.9; }
 .reject-btn { background-color: #c0392b; }
 .reschedule-btn { background-color: #f39c12; color: white; }
 
-/* Utility */
 .hidden { display: none; }

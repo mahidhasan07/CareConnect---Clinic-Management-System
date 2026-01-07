@@ -1,6 +1,4 @@
-/* ===========================
-   1. GLOBAL & DASHBOARD STYLES
-   =========================== */
+
 body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -9,11 +7,7 @@ body {
 
 .container { width: 90%; margin: auto; overflow: hidden; }
 
-/* ===========================
-   2. LANDING PAGE STYLES
-   =========================== */
 
-/* Remove default margins for the landing page body */
 .landing-body {
     margin: 0;
     padding: 0;

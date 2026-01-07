@@ -9,7 +9,6 @@ if (isset($_POST['submit'])) {
     $user = loginUser($email, $password);
 
     if ($user) {
-        // Success: Set Session Variables
         $_SESSION['is_logged_in'] = true;
         $_SESSION['role'] = $user['role'];
         $_SESSION['name'] = $user['name'];
@@ -19,7 +18,6 @@ if (isset($_POST['submit'])) {
         // Start Session Timer
         $_SESSION['last_time'] = time(); 
 
-        // Redirect based on Role
         if ($user['role'] === 'admin') {
             header("Location: ../View/admin_dashboard.php");
         } elseif ($user['role'] === 'doctor') {
@@ -29,7 +27,6 @@ if (isset($_POST['submit'])) {
         }
         exit();
     } else {
-        // ERROR FIX: Redirect back to login page with error message
         header("Location: ../View/login.php?error=Invalid email or password");
         exit();
     }

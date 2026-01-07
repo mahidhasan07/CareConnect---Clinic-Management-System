@@ -2,7 +2,6 @@
 session_start();
 require_once '../Model/DoctorModel.php';
 
-// Get Action from POST (Form) or GET (Link)
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 $docID = $_SESSION['user_id'];
 
@@ -13,7 +12,7 @@ switch ($action) {
         $phone = $_POST['phone'];
         $spec = $_POST['spec'];
         if (updateDoctorProfile($docID, $name, $phone, $spec)) {
-            $_SESSION['name'] = $name; // Update session name
+            $_SESSION['name'] = $name; 
             header("Location: ../View/doctor_dashboard.php");
         } else { echo "Error updating profile"; }
         break;
@@ -43,7 +42,7 @@ switch ($action) {
         $day = $_POST['day'];
         $start = $_POST['start'];
         $end = $_POST['end'];
-        // Note: The SQL table uses a 'SET' for days, but for simplicity we insert one day
+
         if (addAvailability($docID, $day, $start, $end)) {
             header("Location: ../View/doctor_dashboard.php");
         } else { echo "Error adding slot"; }

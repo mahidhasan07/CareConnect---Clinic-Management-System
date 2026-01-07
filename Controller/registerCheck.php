@@ -14,8 +14,7 @@ if (isset($_POST['submit'])) {
     $address = isset($_POST['address']) ? trim($_POST['address']) : null;
     $spec = null; 
 
-    // Create a data string to send back if there is an error
-    // (We DO NOT send the password back for security reasons)
+   
     $user_data = "name=" . urlencode($name) . "&email=" . urlencode($email) . "&phone=" . urlencode($phone) . "&age=" . urlencode($age) . "&gender=" . urlencode($gender) . "&address=" . urlencode($address);
 
     // --- VALIDATION LOGIC START ---
