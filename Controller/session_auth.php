@@ -19,5 +19,6 @@ if (isset($_SESSION['last_time'])) {
     }
 }
 
+//new
 $_SESSION['last_time'] = time();
 ?>
