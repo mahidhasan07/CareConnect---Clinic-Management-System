@@ -82,8 +82,7 @@ if ($slotsResult->num_rows > 0) {
             <label>Address</label>
             <input name="address" value="<?php echo $profile['Address']; ?>" required />
             
-            <label>Medical History</label>
-            <textarea name="history" rows="3"><?php echo isset($profile['MedicalHistory']) ? $profile['MedicalHistory'] : ''; ?></textarea>
+            
             
             <button type="submit" class="btn-primary">Update Profile</button>
         </form>

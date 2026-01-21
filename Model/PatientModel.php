@@ -41,11 +41,12 @@ function getAllDoctors() {
     return $conn->query($sql);
 }
 
-function updatePatientProfile($id, $name, $phone, $history, $address) {
+
+function updatePatientProfile($id, $name, $phone, $address) {
     global $conn;
-    $sql = "UPDATE Patient SET FullName = ?, PhoneNumber = ?, MedicalHistory = ?, Address = ? WHERE PatientID = ?";
+    $sql = "UPDATE Patient SET FullName = ?, PhoneNumber = ?, Address = ? WHERE PatientID = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssi", $name, $phone, $history, $address, $id);
+    $stmt->bind_param("sssi", $name, $phone, $address, $id);
     return $stmt->execute();
 }
 

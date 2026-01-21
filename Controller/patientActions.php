@@ -9,10 +9,9 @@ switch ($action) {
     case 'update_profile':
         $name = $_POST['name'];
         $phone = $_POST['phone'];
-        $history = $_POST['history'];
         $address = $_POST['address'];
         
-        if (updatePatientProfile($patID, $name, $phone, $history, $address)) {
+        if (updatePatientProfile($patID, $name, $phone, $address)) {
             $_SESSION['name'] = $name; // Update session name
             header("Location: ../View/patient_dashboard.php");
         } else {
